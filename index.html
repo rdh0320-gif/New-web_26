@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tomato Crush Moment - 토마토마</title>
+    <style>
+        /* 1번 시안의 타이포그래피 구현을 위한 구글 폰트 로드 */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+KR:wght@100..900&family=Playfair+Display:ital,wght@1,700&family=Poppins:wght@400;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", "Noto Sans KR", sans-serif;
+        }
+
+        section {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background-color: #ffffff; 
+            padding: 0 100px;
+            display: flex;
+            align-items: center;
+            overflow: hidden; /* 배경 원이 창 밖으로 나가도 스크롤 안 생기게 함 */
+        }
+
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100; /* 모든 요소 위에 고정 */
+        }
+
+        header .logo {
+            position: relative;
+            max-width: 80px; 
+        }
+        
+        header .logo img {
+            width: 100%;
+        }
+
+        header ul {
+            position: relative;
+            display: flex;
+        }
+
+        header ul li {
+            list-style: none;
+        }
+
+        header ul li a {
+            display: inline-block;
+            color: #555;
+            margin-left: 40px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        header ul li a:hover {
+            color: #d32f2f; 
+        }
+
+        /* 3번 최종본 배치를 위한 메인 콘텐츠 레이아웃 */
+        .content {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+        }
+
+        /* 왼쪽 텍스트 구역 */
+        .content .textBox {
+            position: relative;
+            width: 45%; /* 3번처럼 아이스크림에게 자리를 더 양보 */
+            max-width: 600px; 
+            padding-top: 100px; /* 헤더 공간 확보 */
+        }
+
+        /* 반응형 타이틀 디자인 */
+        .content .textBox .responsive-title {
+            position: relative;
+            color: #000000;
+            font-family: 'Montserrat', sans-serif;
+            font-size: calc(3rem + 1.5vw); 
+            line-height: 0.9em;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 15px;
+        }
+
+        .content .textBox .responsive-title .line-1 {
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 빨간 흘림체 */
+        .content .textBox .responsive-title .cursive-tomato {
+            display: block;
+            color: #e52d27;
+            font-family: 'Playfair Display', serif;
+            font-size: calc(3.5rem + 2vw); 
+            font-style: italic;
+            font-weight: 700;
+            text-transform: none;
+            line-height: 0.3em;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            padding-left: 50px; 
+            position: relative;
+            z-index: 3; 
+            text-shadow: 3px 3px 0px #fff, -3px -3px 0px #fff, 3px -3px 0px #fff, -3px 3px 0px #fff; 
+        }
+
+        .content .textBox .responsive-title .line-2 {
+            display: block;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content .textBox p {
+            color: #666;
+            font-size: calc(0.7rem + 0.1vw); 
+            margin-top: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            max-width: 500px;
+        }
+
+        .content .textBox a.btn {
+            display: inline-block;
+            margin-top: 40px; 
+            padding: 15px 50px;
+            background: #e52d27;
+            color: #fff;
+            border-radius: 25px; 
+            font-weight: 800;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(229, 45, 39, 0.4);
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .content .textBox a.btn:hover {
+            background: #b71c1c;
+            transform: translateY(-3px);
+        }
+
+        /* [핵심 수정] 오른쪽 메인 이미지 구역 대형화 및 배치 이동 */
+        .content .imgBox {
+            position: absolute; /* content 내부에서 텍스트와 무관하게 자유 배치 */
+            right: 0;
+            top: 0;
+            width: 60%; /* 3번처럼 중앙까지 침범 */
+            height: 100vh; 
+            display: flex;
+            justify-content: center; /* 이미지들을 중앙에 모음 */
+            align-items: center;
+        }
+
+        /* [핵심 수정] 메인 상품 압도적 대형화 및 왼쪽으로 당기기 */
+        .content .imgBox .main-icecream {
+            width: auto;
+            height: 85vh; /* 화면 높이의 85% 차지 */
+            max-height: 800px; /* 너무 커지는 것 방지 */
+            /* [배치 이동] 3번처럼 중앙 쪽으로 당기고 살짝 세움 */
+            transform: rotate(-5deg) translateX(-50px); 
+            filter: drop-shadow(20px 25px 40px rgba(0,0,0,0.25));
+            z-index: 10;
+            object-fit: contain;
+        }
+
+        /* [핵심 수정] 800원 가격표 크기 대폭 확대 및 우측 하단 배치 */
+        .content .imgBox .price-tag {
+            position: absolute;
+            bottom: 10%; /* 오른쪽 아래 구석 배치 */
+            right: 8%;
+            width: 25%; /* 훨씬 크게 키움 */
+            max-width: 220px; /* 시안처럼 큼직하게 */
+            min-width: 150px;
+            transform: rotate(5deg); /* 살짝 비틀기 효과 */
+            z-index: 15; /* 아이스크림보다 위에 배치 */
+            filter: drop-shadow(10px 10px 20px rgba(0,0,0,0.2));
+        }
+
+        /* 하단 다른 토마토 제품들 (1번 시안 배치) */
+        .thumb {
+            position: absolute;
+            bottom: 50px;
+            left: 100px; 
+            display: flex;
+            align-items: flex-end;
+            z-index: 50;
+        }
+
+        .thumb li {
+            list-style: none;
+            margin-right: 30px;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .thumb li:hover {
+            transform: translateY(-15px) scale(1.1);
+        }
+
+        .thumb li img {
+            max-height: 90px; 
+            object-fit: contain;
+        }
+
+        /* 우측 SNS 아이콘 영역 (검은색 세로 배치) */
+        .sci {
+            position: absolute;
+            top: 50%;
+            right: 40px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .sci li {
+            list-style: none;
+            margin: 15px 0;
+        }
+        
+        .sci li a img {
+            width: 22px; 
+            filter: brightness(0); /* SNS 아이콘 검은색 고정 */
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .sci li a:hover img {
+            opacity: 1;
+        }
+
+        /* [핵심 수정완료] 배경 연두색 오브젝트가 우측 하단에 걸치도록 정원 형태로 교정 */
+        .circle {
+            position: absolute;
+            bottom: -50vh;  /* 원의 절반 가량을 화면 아래로 밀어냄 */
+            right: -20vh;   /* 오른쪽 여백을 조절하여 걸치는 느낌 생성 */
+            width: 120vh;   /* 가로세로를 vh 단위로 통일하여 완벽한 동그라미 유지 */
+            height: 120vh;
+            background-color: #9ccc65; 
+            border-radius: 50%; 
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    
+    <section>
+        <div class="circle"></div>
+
+        <header>
+            <a href="#" class="logo"><img src="./imgs/tomato_rogo.png" alt="Tomato Logo"></a>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Menu</a></li>
+                <li><a href="#">What's New</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </header>
+
+        <div class="content">
+            <div class="textBox">
+                <h2 class="responsive-title">
+                    <span class="line-1">Your New</span>
+                    <span class="cursive-tomato">Tomato</span>
+                    <span class="line-2">Crush Moment</span>
+                </h2>
+                <p>A curated archive of refreshing red tastes, from ripe moments to simple pleasures.</p>
+                <a href="#" class="btn">LEARN MORE</a>
+            </div>
+
+            <div class="imgBox">
+                <img src="./imgs/tomatoma1.PNG" alt="토마토마 아이스크림" class="main-icecream">
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
