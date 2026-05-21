@@ -142,6 +142,7 @@
             height: auto;
             position: relative;
             z-index: 2;
+            /* 초기 회전 각도 및 스타일 */
             transform: rotate(-20deg); 
             transition: transform 0.3s ease; 
         }
@@ -154,7 +155,7 @@
             width: 30%;   
             z-index: 3;
             transform: rotate(10deg); 
-            transition: opacity 0.3s ease; /* 가격표 바뀔 때 부드러운 효과 (선택사항) */
+            transition: opacity 0.3s ease; 
         }
 
         /* 하단 썸네일 메뉴 */
@@ -252,15 +253,15 @@
             </li>
             <li>
                 <img src="./imgs/pretz1.png" alt="pretz1" 
-                     onclick="imgSlider('./imgs/tomato.3.png'); changeCircleColor('#a4ce3a'); changeTitle('./imgs/title2.png'); changeLink('https://haitaimall.co.kr/product/1/406/category/34/display/1/'); changePriceTag('./imgs/tomatoma2.png')">
+                     onclick="imgSlider('./imgs/pretz1.png'); changeCircleColor('#a4ce3a'); changeTitle('./imgs/title2.png'); changeLink('https://haitaimall.co.kr/product/1/406/category/34/display/1/'); changePriceTag('./imgs/tomatoma2.png')">
             </li>
             <li>
                 <img src="./imgs/candy.png" alt="candy" 
                      onclick="imgSlider('./imgs/candy.png'); changeCircleColor('#08B326'); changeTitle('./imgs/title2.png'); changeLink('#'); changePriceTag('./imgs/candy2.png')">
             </li>
             <li class="tomatoma">
-                <img src="./imgs/tomatoma.png" alt="tomatoma" 
-                     onclick="imgSlider('./imgs/tomatoma.png'); changeCircleColor('#fbb03b'); changeTitle('./imgs/title2.png'); changeLink('#'); changePriceTag('./imgs/tomatoma2.png')">
+                <img src="./imgs/tomatoma3.png" alt="tomatoma" 
+                     onclick="imgSlider('./imgs/tomato.3.png'); changeCircleColor('#a4ce3a'); changeTitle('./imgs/title2.png'); changeLink('#'); changePriceTag('./imgs/tomatoma2.png')">
             </li>
         </ul>
 
@@ -300,7 +301,7 @@
             }
         }
 
-        // 🌟 새로 추가된 가격표 이미지 변경 함수
+        // 가격표 이미지 변경 함수
         function changePriceTag(priceImgPath) {
             document.querySelector('.priceTag').src = priceImgPath;
         }
