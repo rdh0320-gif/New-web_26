@@ -83,7 +83,6 @@
             max-width: 650px;
         }
 
-        /* ◀ 타이틀 이미지 크기를 가이드 시안 비율에 맞춰 대폭 확대 */
         .content .textBox .titleImg {
             max-width: 620px; 
             width: 200%;
@@ -183,9 +182,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #9bd435;
+            background-color: #9bd435; /* 초기 토마토 연두색 */
             clip-path: circle(600px at right 800px);
-           }
+            transition: background 0.5s ease; /* 색상이 부드럽게 바뀌는 효과 */
+        }
     </style>
 </head>
 <body>
@@ -205,7 +205,7 @@
 
         <div class="content">
             <div class="textBox">
-                <img src="./imgs/title.png" alt="Title" class="titleImg">
+                <img src="./imgs/title2.png" alt="Title2" class="titleImg">
                 <a href="#" class="btn">Learn More</a>
             </div>
 
@@ -216,9 +216,18 @@
         </div>
 
         <ul class="thumb">
-            <li><img src="./imgs/pretz1.png" alt="pretz1" onclick="imgSlider('./imgs/tomato.3.png')"></li>
-            <li><img src="./imgs/candy.png" alt="candy" onclick="imgSlider('./imgs/candy.png')"></li>
-            <li><img src="./imgs/mychu.png" alt="mychu" onclick="imgSlider('./imgs/mychu.png')"></li>
+            <li>
+                <img src="./imgs/pretz1.png" alt="pretz1" 
+                     onclick="imgSlider('./imgs/tomato.3.png'); changeCircleColor('#9bd435'); changeTitle('./imgs/title2.png')">
+            </li>
+            <li>
+                <img src="./imgs/candy.png" alt="candy" 
+                     onclick="imgSlider('./imgs/candy.png'); changeCircleColor('#08B326'); changeTitle('./imgs/title2.png')">
+            </li>
+            <li>
+                <img src="./imgs/mychu.png" alt="mychu" 
+                     onclick="imgSlider('./imgs/mychu.png'); changeCircleColor('#66C142'); changeTitle('./imgs/title2.png')">
+            </li>
         </ul>
 
         <ul class="sci">
@@ -231,6 +240,15 @@
     <script>
         function imgSlider(anything) {
             document.querySelector('.mainProduct').src = anything;
+        }
+
+        function changeCircleColor(color) {
+            const circle = document.querySelector('.circle');
+            circle.style.background = color;
+        }
+
+        function changeTitle(titleImgPath) {
+            document.querySelector('.titleImg').src = titleImgPath;
         }
     </script>
 </body>
