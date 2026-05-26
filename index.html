@@ -7,6 +7,15 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
 
+        :root {
+            --white-circle-size: 42vw;
+            --menu-radius: calc(var(--white-circle-size) / 2 - 2.4vw);
+            --menu-font-size: clamp(10px, 0.95vw, 14px);
+            --menu-active-font-size: clamp(11px, 1.05vw, 15px);
+            --menu-dot-size: 5px;
+            --extra-dot-size: 3px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,49 +23,81 @@
             font-family: "Noto Sans KR", sans-serif;
         }
 
-        body {
+        html, body {
+            width: 100%;
+            height: 100%;
             overflow: hidden;
             background-color: #ffffff;
         }
 
-        section {
-            position: relative;
-            width: 100%;
+        .scroll-container {
+            width: 100vw;
             height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 0 4vw; 
         }
 
-        /* 우측 하단 연두색 배경 */
-        .circle {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .section-wrap {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .first-section-content {
             width: 100%;
             height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 4vw;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bottom-green-circle {
+            position: absolute;
+            left: -9vw;
+            bottom: -28vw;
+            width: 38vw;
+            height: 38vw;
+            border-radius: 50%;
+            background: #c7f3b6;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .circle-bg {
+            position: absolute;
+            top: 50%;
+            right: -20vw;
+            transform: translateY(-50%);
+            width: 70vw;
+            height: 70vw;
+            border-radius: 50%;
             background-color: #a4ce3a;
-            clip-path: ellipse(40% 70% at 100% 100%);
-            transition: background 0.5s ease;
+            transition: background 0.6s ease;
             z-index: 1;
         }
 
-        /* 헤더 / 내비게이션 */
         header {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 1.5vw 4vw; 
+            height: 100px;
+            padding: 0 4vw;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
+            background: #fff;
+            border-bottom: 1px solid #ededed;
         }
 
         header .logo {
-            width: 4.5vw; 
-            min-width: 45px;
+            position: absolute;
+            top: 18px;
+            left: 4.5vw;
+            width: 3.2vw;
+            min-width: 42px;
+            max-width: 58px;
         }
 
         header .logo img {
@@ -65,8 +106,11 @@
         }
 
         header ul {
+            margin-left: auto;
             display: flex;
-            gap: 2vw;
+            align-items: center;
+            gap: 3.2vw;
+            height: 100%;
         }
 
         header ul li {
@@ -74,9 +118,9 @@
         }
 
         header ul li a {
-            color: #777;
+            color: #111;
             text-decoration: none;
-            font-size: clamp(10px, 1vw, 15px); 
+            font-size: clamp(11px, 0.9vw, 14px);
             font-weight: 500;
             transition: color 0.3s;
         }
@@ -85,7 +129,6 @@
             color: #111;
         }
 
-        /* 메인 콘텐츠 영역 */
         .content {
             position: relative;
             width: 100%;
@@ -95,32 +138,34 @@
             z-index: 10;
         }
 
-        /* 텍스트 영역 */
         .content .textBox {
             position: relative;
-            width: 50%; 
-            margin-top: -3vw; 
+            width: 45%;
+            margin-top: -3vw;
         }
 
         .content .textBox .titleImg {
-            width: 100%; 
+            width: 100%;
             height: auto;
             display: block;
         }
 
         .content .textBox a.btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             margin-top: 2vw;
-            padding: 0.8vw 2vw;
+            margin-left: 7vw;
+            width: 12vw;
+            min-width: 150px;
+            height: 46px;
             background: #e32626;
             color: #fff;
             border-radius: 40px;
             font-weight: 700;
-            letter-spacing: 1px;
             text-decoration: none;
             font-size: clamp(10px, 1vw, 14px);
             transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(227, 38, 38, 0.2);
         }
 
         .content .textBox a.btn:hover {
@@ -128,73 +173,183 @@
             transform: translateY(-2px);
         }
 
-        /* 메인 제품 이미지 영역 */
         .content .imgBox {
             position: relative;
-            width: 50%; 
+            width: 55%;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
+        .content .imgBox .product-orbit {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-origin: 90% 50%;
+            transition: transform 0.6s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .content .imgBox .product-orbit.slide-out {
+            transform: rotate(-70deg);
+            opacity: 0;
+        }
+
+        .content .imgBox .product-orbit.slide-top {
+            transition: none !important;
+            transform: rotate(70deg);
+            opacity: 0;
+        }
+
         .content .imgBox .mainProduct {
-            width: 60%; 
+            width: 50%;
             height: auto;
             position: relative;
+            right: 10vw;
             z-index: 2;
-            /* 초기 회전 각도 및 스타일 */
-            transform: rotate(-20deg); 
-            transition: transform 0.3s ease; 
+            transform: rotate(var(--product-rotation, -20deg)) scale(1);
+            transform-origin: center;
+            transition: transform 0.28s ease, filter 0.28s ease;
+            cursor: pointer;
         }
 
-        /* 가격 태그 */
+        .content .imgBox .product-orbit:hover .mainProduct {
+            transform: rotate(var(--product-rotation, -20deg)) scale(1.08);
+            filter: drop-shadow(0 1.2vw 1.6vw rgba(0, 0, 0, 0.14));
+        }
+
         .content .imgBox .priceTag {
             position: absolute;
-            bottom: -3vw; 
-            right: 4vw;   
-            width: 30%;   
+            bottom: -3vw;
+            right: 15vw;
+            width: 30%;
             z-index: 3;
-            transform: rotate(10deg); 
-            transition: opacity 0.3s ease; 
+            transform: rotate(10deg);
+            transition: opacity 0.3s ease;
         }
 
-        /* 하단 썸네일 메뉴 */
-        .thumb {
+        .white-circle {
             position: absolute;
-            bottom: 2vw;
-            left: 4vw; 
-            display: flex;
-            align-items: flex-end;
-            gap: 1.2vw; 
-            z-index: 20;
+            top: 50%;
+            right: -8.5vw;
+            transform: translateY(-50%);
+            width: var(--white-circle-size);
+            height: var(--white-circle-size);
+            border-radius: 50%;
+            background-color: #ffffff;
+            box-shadow: -15px 0 40px rgba(0,0,0,0.05);
+            z-index: 15;
+            pointer-events: none;
         }
 
-        .thumb li {
+        .circle-dots {
+            position: absolute;
+            top: 50%;
+            right: -8.5vw;
+            width: var(--white-circle-size);
+            height: var(--white-circle-size);
+            transform: translateY(-50%);
+            z-index: 19;
+            pointer-events: none;
+        }
+
+        .circle-dots li {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
             list-style: none;
+            transform: rotate(var(--angle)) translateX(calc(var(--menu-radius) * -1)) rotate(calc(var(--angle) * -1));
+        }
+
+        .circle-dots li::before {
+            content: '';
+            display: block;
+            width: var(--extra-dot-size);
+            height: var(--extra-dot-size);
+            border-radius: 50%;
+            background-color: #d8d8d8;
+        }
+
+        .circle-menu {
+            position: absolute;
+            top: 50%;
+            right: -8.5vw;
+            width: var(--white-circle-size);
+            height: var(--white-circle-size);
+            transform: translateY(-50%);
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .circle-menu li {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            list-style: none;
+            transform: rotate(var(--angle)) translateX(calc(var(--menu-radius) * -1)) rotate(calc(var(--angle) * -1));
+            pointer-events: auto;
             cursor: pointer;
-            transition: 0.3s;
         }
 
-        .thumb li:hover {
-            transform: translateY(-8px);
+        .circle-menu li .menu-item {
+            display: flex;
+            align-items: center;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            font-size: var(--menu-font-size);
+            font-weight: 700;
+            color: #888;
+            transition: color 0.3s, font-size 0.3s;
         }
 
-        .thumb li img {
-            width: 4vw; 
-            min-width: 35px;
-            height: auto;
+        .circle-menu li .menu-item::before {
+            content: '';
+            display: inline-block;
+            flex: 0 0 auto;
+            width: var(--menu-dot-size);
+            height: var(--menu-dot-size);
+            background-color: #d8d8d8;
+            border-radius: 50%;
+            margin-right: 9px;
+            box-shadow: 0 0 0 2px rgba(227, 38, 38, 0);
+            transition: all 0.3s;
         }
 
-        .thumb li.tomatoma img {
-            width: 3.5vw; 
-            min-width: 30px;
+        .circle-menu li.active .menu-item {
+            color: #e32626;
+            font-size: var(--menu-active-font-size);
         }
 
-        /* 우측 SNS 아이콘 */
+        .circle-menu li.active .menu-item::before {
+            background-color: #e32626;
+            box-shadow: 0 0 0 2px rgba(227, 38, 38, 0.16);
+            transform: scale(1.25);
+        }
+
+        .circle-menu li:hover .menu-item {
+            color: #111;
+        }
+
+        .circle-menu li:hover .menu-item::before {
+            background-color: #555;
+            transform: scale(1.15);
+        }
+
+        .circle-menu li.active:hover .menu-item::before {
+            background-color: #e32626;
+            transform: scale(1.25);
+        }
+
         .sci {
             position: absolute;
             top: 50%;
-            right: 2vw; 
+            right: 2vw;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
@@ -210,7 +365,6 @@
         .sci li a img {
             width: 1.2vw;
             min-width: 16px;
-            height: auto;
             transition: transform 0.3s;
         }
 
@@ -220,90 +374,117 @@
     </style>
 </head>
 <body>
-    
-    <section>
-        <div class="circle"></div>
-        
-        <header>
-            <a href="#" class="logo"><img src="./imgs/tomato_rogo.png" alt="Logo"></a>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Menu</a></li>
-                <li><a href="#">What's New</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </header>
 
-        <div class="content">
-            <div class="textBox">
-                <img src="./imgs/title2.png" alt="Title2" class="titleImg">
-                <a href="#" class="btn">Learn More</a>
+    <div class="scroll-container">
+        <section class="section-wrap">
+            <div class="first-section-content">
+                <div class="bottom-green-circle"></div>
+                <div class="circle-bg" id="circleBg"></div>
+
+                <header>
+                    <a href="#" class="logo"><img src="./imgs/tomato_rogo.png" alt="Logo"></a>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">What's New</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </header>
+
+                <div class="content">
+                    <div class="textBox">
+                        <img src="./imgs/title2.png" alt="Title2" class="titleImg" id="titleImg">
+                        <a href="https://www.bing.co.kr/product/detail?PDT=205" target="_blank" class="btn" id="linkBtn">BUY NOW</a>
+                    </div>
+
+                    <div class="imgBox">
+                        <div class="product-orbit" id="orbitWrapper">
+                            <img src="./imgs/tomato.3.png" alt="Tomato Crush" class="mainProduct" id="mainProduct" style="width: 50%; --product-rotation: -20deg; right: 10vw;">
+                        </div>
+                        <img src="./imgs/tomatoma2.png" alt="Price" class="priceTag" id="priceTag">
+                    </div>
+                </div>
+
+                <div class="white-circle"></div>
+
+                <ul class="circle-dots">
+                    <li style="--angle: 35deg;"></li>
+                    <li style="--angle: 28deg;"></li>
+                    <li style="--angle: 21deg;"></li>
+
+                    <li style="--angle: 7deg;"></li>
+                    <li style="--angle: 0deg;"></li>
+                    <li style="--angle: -7deg;"></li>
+
+                    <li style="--angle: -21deg;"></li>
+                    <li style="--angle: -28deg;"></li>
+                    <li style="--angle: -35deg;"></li>
+                </ul>
+
+                <ul class="circle-menu">
+                    <li style="--angle: 42deg;" onclick="changeSnack(this, './imgs/mychu.png', '#66C142', './imgs/title2.png', 'https://www.crown.co.kr/product/view?idx=316', './imgs/tomatoma2.png', '65%', '60deg', '8vw')">
+                        <div class="menu-item">Mychew</div>
+                    </li>
+
+                    <li style="--angle: 14deg;" onclick="changeSnack(this, './imgs/pretz1.png', '#a4ce3a', './imgs/title2.png', 'https://haitaimall.co.kr/product/1/406/category/34/display/1/', './imgs/tomatoma2.png', '30%', '-20deg', '15vw')">
+                        <div class="menu-item">Pretz</div>
+                    </li>
+
+                    <li style="--angle: -14deg;" onclick="changeSnack(this, './imgs/candy.png', '#08B326', './imgs/title2.png', '#', './imgs/candy2.png', '35%', '-20deg', '15vw')">
+                        <div class="menu-item">Candy</div>
+                    </li>
+
+                    <li class="active" style="--angle: -42deg;" onclick="changeSnack(this, './imgs/tomato.3.png', '#a4ce3a', './imgs/title2.png', 'https://www.bing.co.kr/product/detail?PDT=205', './imgs/tomatoma2.png', '50%', '-20deg', '10vw')">
+                        <div class="menu-item">Tomatoma</div>
+                    </li>
+                </ul>
+
+                <ul class="sci">
+                    <li><a href="#"><img src="./imgs/twitter.png" alt="Twitter"></a></li>
+                    <li><a href="#"><img src="./imgs/facebook.png" alt="Facebook"></a></li>
+                    <li><a href="#"><img src="./imgs/instagram.png" alt="Instagram"></a></li>
+                </ul>
             </div>
-
-            <div class="imgBox">
-                <img src="./imgs/tomato.3.png" alt="Tomato Crush" class="mainProduct">
-                <img src="./imgs/tomatoma2.png" alt="Price" class="priceTag">
-            </div>
-        </div>
-
-        <ul class="thumb">
-            <li>
-                <img src="./imgs/mychu.png" alt="mychu" 
-                     onclick="imgSlider('./imgs/mychu.png'); changeCircleColor('#66C142'); changeTitle('./imgs/title2.png'); changeLink('https://www.crown.co.kr/product/view?idx=316'); changePriceTag('./imgs/tomatoma2.png')">
-            </li>
-            <li>
-                <img src="./imgs/pretz1.png" alt="pretz1" 
-                     onclick="imgSlider('./imgs/pretz1.png'); changeCircleColor('#a4ce3a'); changeTitle('./imgs/title2.png'); changeLink('https://haitaimall.co.kr/product/1/406/category/34/display/1/'); changePriceTag('./imgs/tomatoma2.png')">
-            </li>
-            <li>
-                <img src="./imgs/candy.png" alt="candy" 
-                     onclick="imgSlider('./imgs/candy.png'); changeCircleColor('#08B326'); changeTitle('./imgs/title2.png'); changeLink('#'); changePriceTag('./imgs/candy2.png')">
-            </li>
-            <li class="tomatoma">
-                <img src="./imgs/tomatoma3.png" alt="tomatoma" 
-                     onclick="imgSlider('./imgs/tomato.3.png'); changeCircleColor('#a4ce3a'); changeTitle('./imgs/title2.png'); changeLink('#'); changePriceTag('./imgs/tomatoma2.png')">
-            </li>
-        </ul>
-
-        <ul class="sci">
-            <li><a href="#"><img src="./imgs/twitter.png" alt="Twitter"></a></li>
-            <li><a href="#"><img src="./imgs/facebook.png" alt="Facebook"></a></li>
-            <li><a href="#"><img src="./imgs/instagram.png" alt="Instagram"></a></li>
-        </ul>
-    </section>
+        </section>
+    </div>
 
     <script>
-        // 메인 제품 이미지 변경
-        function imgSlider(anything) {
-            document.querySelector('.mainProduct').src = anything;
-        }
+        function changeSnack(element, imgSrc, bgColor, titleSrc, linkUrl, priceSrc, imgWidth, imgRotation, imgRight) {
+            const orbit = document.getElementById('orbitWrapper');
+            const product = document.getElementById('mainProduct');
 
-        // 배경색 변경
-        function changeCircleColor(color) {
-            const circle = document.querySelector('.circle');
-            circle.style.background = color;
-        }
+            const menuItems = document.querySelectorAll('.circle-menu li');
+            menuItems.forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
 
-        // 타이틀 이미지 변경
-        function changeTitle(titleImgPath) {
-            document.querySelector('.titleImg').src = titleImgPath;
-        }
+            orbit.classList.add('slide-out');
 
-        // 버튼 링크 변경 함수
-        function changeLink(linkUrl) {
-            const btn = document.querySelector('.btn');
-            btn.href = linkUrl;
-            
-            if (linkUrl !== '#') {
-                btn.target = "_blank";
-            } else {
-                btn.target = "_self";
-            }
-        }
+            setTimeout(() => {
+                orbit.classList.remove('slide-out');
+                orbit.classList.add('slide-top');
 
-        // 가격표 이미지 변경 함수
-        function changePriceTag(priceImgPath) {
-            document.querySelector('.priceTag').src = priceImgPath;
+                product.src = imgSrc;
+                document.getElementById('circleBg').style.backgroundColor = bgColor;
+                document.getElementById('titleImg').src = titleSrc;
+                document.getElementById('priceTag').src = priceSrc;
+
+                if (imgWidth) product.style.width = imgWidth;
+
+                if (imgRotation) product.style.setProperty('--product-rotation', imgRotation);
+                else product.style.setProperty('--product-rotation', '-20deg');
+
+                if (imgRight) product.style.right = imgRight;
+                else product.style.right = '10vw';
+
+                const btn = document.getElementById('linkBtn');
+                btn.href = linkUrl;
+                btn.target = linkUrl !== '#' ? "_blank" : "_self";
+
+                void orbit.offsetWidth;
+
+                orbit.classList.remove('slide-top');
+
+            }, 400);
         }
     </script>
 </body>
